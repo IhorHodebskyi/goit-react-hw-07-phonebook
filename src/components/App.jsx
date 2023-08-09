@@ -1,16 +1,36 @@
-export const App = () => {
+// import { nanoid } from 'nanoid';
+import { ContactsForm } from './contactsForm/ContactsForm';
+import ContactList from './contacts/ContactsList';
+import Filter from './Filter/Filter';
+import {
+  Container,
+  Wrapper,
+  Title,
+  SubTitle,
+} from './App.styled';
+import { useSelector } from 'react-redux';
+import { selectContacts } from 'redux/selectors';
+
+const App = () => {
+  const { items } = useSelector(selectContacts);
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Container>
+      <Title>Phonebook</Title>
+
+      <ContactsForm />
+
+      <SubTitle>Contacts</SubTitle>
+      {items.length > 0 ? (
+        <Filter />
+      ) : (
+        <Wrapper>
+          Your phonebook is empty. Add first contact!
+        </Wrapper>
+      )}
+      {items.length > 0 && <ContactList />}
+    </Container>
   );
 };
+
+export default App;
