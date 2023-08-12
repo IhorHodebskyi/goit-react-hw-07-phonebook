@@ -8,18 +8,26 @@ import {
   Title,
   SubTitle,
 } from './App.styled';
-import { useSelector } from 'react-redux';
-import { selectContacts } from 'redux/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContacts } from 'redux/contacts/selectors';
+import { useEffect } from 'react';
+import { fetchContacts } from 'redux/contacts/thunks';
+import Error from './Error/Error';
+import IsLoading from './IsLoading/IsLoading';
+// import { selectContacts } from 'redux/selectors';
 
 const App = () => {
-  const { items } = useSelector(selectContacts);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+  const { items, isLoading, error } =
+    useSelector(selectContacts);
 
   return (
     <Container>
       <Title>Phonebook</Title>
-
       <ContactsForm />
-
       <SubTitle>Contacts</SubTitle>
       {items.length > 0 ? (
         <Filter />
@@ -28,6 +36,8 @@ const App = () => {
           Your phonebook is empty. Add first contact!
         </Wrapper>
       )}
+      {isLoading && <IsLoading />}
+      {error && <Error />}
       {items.length > 0 && <ContactList />}
     </Container>
   );
