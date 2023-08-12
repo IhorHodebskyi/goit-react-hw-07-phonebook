@@ -6,10 +6,8 @@ import { deleteContacts } from 'redux/contacts/thunks';
 const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectFilterContacts);
-  console.log(contacts);
 
   const onRemoveContact = id => {
-    console.log(id);
     dispatch(deleteContacts(id));
   };
 
